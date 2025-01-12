@@ -1,0 +1,17 @@
+Crea un registro de una biblioteca.
+Tienes que poder registrar y recuperar los datos de los libros, con campos como el título, número de páginas, código ISBN...
+
+Usa HTML, CSS, JS y SQL (y PHP).
+
+Estructura de la web:
+|- index.html
+|- registro.php
+|- api.php (para recuperar los datos)(yo te la dejaré medio lista)
+|- connect.php (para guardar la conexión a la base de datos)
+|- assets/
+|--- css/
+|----- style.css
+|--- js/
+|----- app.js
+
+Endpoint para recuperar los libros: api.php?query=libros
