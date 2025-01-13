@@ -1,7 +1,7 @@
 document.getElementById('libreriaForm').addEventListener('submit', function (event) {
     event.preventDefault(); 
 
-    // Capturar los datos del formulario
+    // Datos formulario
     const titulo = document.getElementById('titulo').value;
     const autor = document.getElementById('autor').value;
     const ano = document.getElementById('ano').value;
@@ -13,14 +13,22 @@ document.getElementById('libreriaForm').addEventListener('submit', function (eve
     data.append('ano', ano);
 
     // Enviar los datos con fetch
-    fetch('registro.php', { 
+    fetch('http://localhost/registro.php', { 
         method: 'POST',
         body: data,
     })
-    .then(response => response.json())  // Esperamos una respuesta JSON
+    .then(response => {
+                // Comprobar si la respuesta es correcta
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                // Imprimir el cuerpo de la respuesta en consola para depuración
+                return response.text();  // Usar text() en lugar de json() para ver qué devuelve
+            })
     .then(data => {
-        // Mostrar el mensaje de éxito o error
-        document.getElementById('mensaje').innerText = data.message || data.error;
+        console.log('Respuesta del servidor:', data); // Aquí verás el contenido recibido
+        document.getElementById('mensaje').innerText = 'Datos enviados con éxito';
     })
     .catch(error => {
         console.error('Error en la solicitud:', error);

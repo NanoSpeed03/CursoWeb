@@ -1,13 +1,21 @@
 <?php
+
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
+    // Encabezados para permitir solicitudes CORS y especificar JSON
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json");
+
     include_once "connect.php";
-    $mysqli = connect();
+    $conn = connect();
 
     if(!isset($_GET["query"])){
         exit();
     }
 
-    if($_GET["libros"]){
-        $sql = "SELECT * FROM libros" // TODO: Rellena la query en SQL para recuperar todos los campos de la tabla libros
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $sql = "SELECT * FROM libros"; // TODO: Rellena la query en SQL para recuperar todos los campos de la tabla libros
         $result = $conn->query($sql);
 
         // Verificar si hay resultados
@@ -28,5 +36,5 @@
         exit();
     }
 
-    $mysqli -> close();
+    $conn -> close();
 ?>
