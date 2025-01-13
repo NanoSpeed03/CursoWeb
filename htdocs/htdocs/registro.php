@@ -1,6 +1,17 @@
 <?php
+
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+
+    // Encabezados para permitir solicitudes CORS y especificar JSON
+    header("Access-Control-Allow-Origin: *");
+    header("Content-Type: application/json; charset=UTF-8");
+
     include "connect.php";  // Asegúrate de que esta es la conexión correcta a la base de datos
-    
+
+    // Llamar a la función de conexión
+    $conn = connect();  // Esto obtiene el objeto de conexión a la base de datos
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Recuperar datos del formulario
         $titulo = $_POST['titulo'] ?? null;
@@ -11,7 +22,13 @@
         if ($titulo && $autor && $anio) {
             // Preparar la consulta SQL para insertar los datos
             $stmt = $conn->prepare("INSERT INTO libros (titulo, autor, ano) VALUES (?, ?, ?)");
-            $stmt->bind_param("ssi", $titulo, $autor, $anio); // "ssi" indica: string, string, integer
+
+            if (!$stmt) {
+                die(json_encode(["error" => "Error al preparar la consulta SQL: " . $conn->error]));
+            }
+    
+            // Vincular los parámetros y ejecutar la consulta
+            $stmt->bind_param("ssi", $titulo, $autor, $anio);    
 
             // Ejecutar la consulta
             if ($stmt->execute()) {
@@ -28,6 +45,7 @@
     } else {
         echo json_encode(array("error" => "Método HTTP no permitido. Usa POST."));
 }
+// Cerrar la conexión
 $conn->close();
 
 ?>

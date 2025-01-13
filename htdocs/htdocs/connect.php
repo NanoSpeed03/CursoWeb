@@ -1,13 +1,13 @@
 <?php
     function connect(){
-        $mysqli = new mysqli("localhost:3360","root","","biblioteca");
+        $conn = new mysqli("localhost","root","","biblioteca");
 
         // Check connection
-        if ($mysqli -> connect_error) {
-            echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
+        if ($conn -> connect_error) {
+            echo "Failed to connect to MySQL: " . $conn -> connect_error;
             exit();
         }
 
-        return $mysqli;
+        return $conn;
     }
 ?>
